@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>分享内容校验工具</title>
+	<meta http-equiv="Content-Language" content="zh-CN">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="basic.css" type="text/css">
+</head>
+<body>
+
+	<script type="text/javascript">
+
+	 function onMatch(){
+	 	var content = document.getElementById('textSour').value
+	 	if(content == null || content == ""){
+	 		alert("请输入内容");
+	 		return;
+	 	}
+
+
+		//var regular = /【东道联盟企划部牛海换2018年(?:1[0-2]|[1-9])月(?:([0-2][1-9])|[1-9]?|3[0-1])日分享】[\\s\\S]*/
+
+		var regular = eval('/^'+getRegular()+'$/');
+	
+	 	var match = regular.exec(content);
+	 	if (match) {
+			alert("匹配成功");
+	 	}else{
+			alert("匹配失败");
+	 	}
+	 	
+	 }
+
+	 function getRegular(){
+		var date = new Date();
+		var title = "【东道联盟企划部牛海换" + date.getFullYear() + "年" + (date.getMonth() +1) + "月" + date.getDate() + "日分享】[\\s\\S]*";
+
+		var patt = title.concat("【本月工作计划】[\\s\\S]*");
+
+        var isSunDay = (0 == date.getDay());
+
+        if(isSunDay){
+        	patt = patt.concat("【本周工作总结】[\\s\\S]*","【下周工作计划】[\\s\\S]*");
+        }else{
+            patt = patt.concat("【本周工作计划】[\\s\\S]*");
+        }
+
+        patt = patt.concat("【今日工作总结】[\\s\\S]*","【明日工作计划】[\\s\\S]*");
+        if(isSunDay){
+        	patt = patt.concat("【本周分享】[\\s\\S]*");
+        }else{
+        	patt = patt.concat("【今日分享】[\\s\\S]*");
+        }
+
+	 	return patt;
+	 }
+
+	</script>
+
+
+	<div class="toolName">分享内容校验工具</div>
+	
+	<br/>
+
+	<div class="topBar">
+	<textarea id="textSour" placeholder="请输入待匹配的内容"></textarea>
+	</div>
+
+
+	<a onclick="return onMatch();" class="btn btn-primary"><i class="icon-chevron-down icon-white"></i>测试匹配</a>
+
+	<br>
+
+	<img src="res/download_qrcode.png">
+
+
+</body>
+</html>>
